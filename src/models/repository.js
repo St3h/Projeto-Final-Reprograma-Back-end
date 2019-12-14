@@ -1,17 +1,14 @@
 const mongoose = require('mongoose');
 const MONGO_URL = 'mongodb://localhost:27017/OportunidadesApi';
 
-function conect() {
-    mongoose.conect(MONGO_URL,
-        { useNewUrlParser: true },
-        function (error) {
-          if(error) {
-            console.error("Ocorreu um erro: ", error)
-          } else {
-            console.log("Conectado ao mongoDB.")
-          }
-        }
-     );
+const connect = () => {
+  mongoose.connect(MONGO_URL, { 
+    useUnifiedTopology: true,
+    useNewUrlParser: true })
+  const connection = mongoose.connection
+  connection.on('error', () => console.error('Erro ao conectar no mongo'))
+  
+  connection.once('open', () => console.log('Conectamos no mongo!'))
 }
 
-module.export = { conect };
+module.exports = { connect };
