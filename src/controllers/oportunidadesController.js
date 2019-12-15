@@ -1,5 +1,5 @@
 const {usuarioModel} = require('../models/usuarioSchema');
-const oportunidadeModel = require('../models/oportunidadeSchema');
+const { oportunidadeModel } = require('../models/oportunidadeSchema');
 const comentarioModel= require('../models/comentarioSchema');
 
 const addUsuario = (request, response) => {
@@ -40,8 +40,26 @@ const addAdmin = (request, response) => {
 
 };
 
+const addEvento =  async (request, response) => {
+    const organizadorId = request.params.organizadorId;
+    const evento = request.body;
+    const options = { new: true };
+
+    const novoEvento = new oportunidadeModel(evento);
+    const organizador = await usuarioModel.findById(organizadorId);
+
+    organizador.oportunidades.push(novoEvento);
+    organizador.save((error) => {
+        if (error){
+            return response.status(500).send(error)
+        }
+            return response.status(201).send(organizador)
+    })
+};
+
 module.exports = {
     addUsuario,
     addOrganizador,
-    addAdmin
+    addAdmin,
+    addEvento
 }
