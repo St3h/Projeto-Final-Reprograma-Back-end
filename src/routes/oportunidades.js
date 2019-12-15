@@ -4,5 +4,6 @@ const router = express.Router();
 const controller = require ('../controllers/oportunidadesController');
 
 router.post('', controller.addUsuario);
+router.post('/admin', controller.addAdmin);
 
-module.exports = router 
+module.exports = router;
