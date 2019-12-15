@@ -3,7 +3,6 @@ const router = express.Router();
 
 const controller = require ('../controllers/oportunidadesController');
 
-router.post('/criarUsuario', controller.addUsuario);
-
+router.post('', controller.addUsuario);
 
 module.exports = router 
