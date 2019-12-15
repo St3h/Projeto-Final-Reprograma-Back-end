@@ -12,7 +12,20 @@ const addUsuario = (request, response) => {
         }
             return response.status(201).send(novoUsuario)
     })
-}
+};
+
+const addOrganizador = (request, response) => {
+    request.body.grupo = 'organizador';
+    const novoUsuario = new usuarioModel(request.body);
+
+    novoUsuario.save((error) => {
+        if(error){
+            return response.status(500).send(error)
+        }
+            return response.status(201).send(novoUsuario)
+    })
+};
+
 
 const addAdmin = (request, response) => {
     request.body.grupo = 'admin';
@@ -25,10 +38,10 @@ const addAdmin = (request, response) => {
             return response.status(201).send(novoUsuario)
     })
 
-}
+};
 
 module.exports = {
     addUsuario,
+    addOrganizador,
     addAdmin
-
 }
