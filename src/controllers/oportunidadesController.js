@@ -1,9 +1,9 @@
-const usuarioModel = require('../models/usuarioSchema');
+const {usuarioModel} = require('../models/usuarioSchema');
 const oportunidadeModel = require('../models/oportunidadeSchema');
 const comentarioModel= require('../models/comentarioSchema');
 
 const addUsuario = (request, response) => {
-    const novoUsuario = new usuarioCollection(request.body);
+    const novoUsuario = new usuarioModel(request.body);
 
     novoUsuario.save((error) => {
         if(error){
@@ -13,4 +13,7 @@ const addUsuario = (request, response) => {
     })
 }
 
-module.exports = { addUsuario };
+module.exports = {
+    addUsuario,
+    
+}
