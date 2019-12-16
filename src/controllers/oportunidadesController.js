@@ -49,40 +49,49 @@ const addEvento =  async (request, response) => {
     const organizador = await usuarioModel.findById(organizadorId);
 
     organizador.oportunidades.push(novoEvento);
+
+    novoEvento.save((error) =>{
+        if (error){
+            return response.status(500).send(error)
+        }
+    });
+
     organizador.save((error) => {
         if (error){
             return response.status(500).send(error)
         }
             return response.status(201).send(organizador)
-    })
+    });
 };
 
 const addComentario = async (request, response) => {
     const usuarioId = request.params.usuarioId;
     const eventoId = request.params.eventoId;
     const comentario = request.body;
-    const options = { new: true };
+    const options = { new: true};
 
+    const usuario = await usuarioModel.findById(usuarioId);
+    request.body.nome = usuario.nome;
+    const evento = await oportunidadeModel.findById(eventoId);
+    
     const novoComentario = new comentarioModel(comentario);
-
-    const evento = await usuarioModel.oportunidades.findById(eventoId)
-    const usuario = await usuarioModel(usuarioId);
-
-    evento.comentarios.push(novoComentario);
+    
     usuario.comentarios.push(novoComentario);
+    evento.comentarios.push(novoComentario);
+    
+    usuario.save((error) => {
+        if(error){
+            return response.status(500).send(error)
+        }
+    });
 
     evento.save((error) => {
-        if (error){
+        if(error){
             return response.status(500).send(error)
-        }else{ usuario.save((error) => {
-            if (error){
-                return response.status(500).send(error)
-            }
-                return response.status(201).send(evento)
-        })      
-        }            
-    }
-    )};
+        }
+            return response.status(201).send(evento)
+    });
+};
 
 module.exports = {
     addUsuario,

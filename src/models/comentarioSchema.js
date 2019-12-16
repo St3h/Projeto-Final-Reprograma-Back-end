@@ -3,7 +3,7 @@ const schema = mongoose.Schema
 
 const comentarioSchema = new schema({
     _id: { type: mongoose.Schema.Types.ObjectId, auto: true, required: true},
-    nome: { type: String, required: true},
+    nome: { type: String},
     comentario: { type: String, required: true}
 });
 
