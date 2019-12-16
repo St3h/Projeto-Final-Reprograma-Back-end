@@ -64,6 +64,19 @@ const addEvento =  async (request, response) => {
     });
 };
 
+const getAll = (request, response) => {
+    eventos = oportunidadeModel.find((error, eventos) =>{
+        if(error){
+            return response.status(500).send(error)
+        }
+            return response.status(200).send(eventos)
+    });
+};
+
+
+
+
+
 const addComentario = async (request, response) => {
     const usuarioId = request.params.usuarioId;
     const eventoId = request.params.eventoId;
@@ -98,5 +111,6 @@ module.exports = {
     addOrganizador,
     addAdmin,
     addEvento,
+    getAll,
     addComentario
 }
