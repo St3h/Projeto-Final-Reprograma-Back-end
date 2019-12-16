@@ -81,12 +81,29 @@ const getByOrganizadorNome = (request, response) => {
 
     oportunidadeModel.find(filtro, (error, eventos) => {
         if(error){
-            return response.status(500).sen(error)
+            return response.status(500).send(error)
         }else{
             if(eventos.length > 0){
                 return response.status(200).send(eventos)
             }
-                return response.status(404)
+                return response.status(404).send('Evento não encontrado')
+        }
+    })
+};
+
+const getByEventoNome  = (request, response) => {
+    const eventoNome = request.params.eventoNome
+    const regex = new RegExp (eventoNome, 'i');
+    const filtro = { nome: regex };
+    
+    oportunidadeModel.find(filtro, (error, eventos) => {
+        if (error){
+            return response.status(500).send(error)
+        }else{
+            if(eventos.length > 0){
+                return response.status(200).send(eventos)
+            }
+            return response.status(404).send('Evento não encontrado')
         }
     })
 };
@@ -127,5 +144,6 @@ module.exports = {
     addEvento,
     getAll,
     getByOrganizadorNome,
+    getByEventoNome,
     addComentario
 }
