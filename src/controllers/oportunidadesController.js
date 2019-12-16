@@ -1,6 +1,6 @@
-const {usuarioModel} = require('../models/usuarioSchema');
+const { usuarioModel } = require('../models/usuarioSchema');
 const { oportunidadeModel } = require('../models/oportunidadeSchema');
-const comentarioModel= require('../models/comentarioSchema');
+const { comentarioModel }= require('../models/comentarioSchema');
 
 const addUsuario = (request, response) => {
     request.body.grupo = 'comum';
@@ -57,9 +57,37 @@ const addEvento =  async (request, response) => {
     })
 };
 
+const addComentario = async (request, response) => {
+    const usuarioId = request.params.usuarioId;
+    const eventoId = request.params.eventoId;
+    const comentario = request.body;
+    const options = { new: true };
+
+    const novoComentario = new comentarioModel(comentario);
+
+    const evento = await usuarioModel.oportunidades.findById(eventoId)
+    const usuario = await usuarioModel(usuarioId);
+
+    evento.comentarios.push(novoComentario);
+    usuario.comentarios.push(novoComentario);
+
+    evento.save((error) => {
+        if (error){
+            return response.status(500).send(error)
+        }else{ usuario.save((error) => {
+            if (error){
+                return response.status(500).send(error)
+            }
+                return response.status(201).send(evento)
+        })      
+        }            
+    }
+    )};
+
 module.exports = {
     addUsuario,
     addOrganizador,
     addAdmin,
-    addEvento
+    addEvento,
+    addComentario
 }
