@@ -74,6 +74,23 @@ const getAll = (request, response) => {
     });
 };
 
+const getByOrganizadorNome = (request, response) => {
+    const organizadorNome = request.params.organizadorNome;
+    const regex = new RegExp (organizadorNome, 'i');
+    const filtro = { organizador: regex };
+
+    oportunidadeModel.find(filtro, (error, eventos) => {
+        if(error){
+            return response.status(500).sen(error)
+        }else{
+            if(eventos.length > 0){
+                return response.status(200).send(eventos)
+            }
+                return response.status(404)
+        }
+    })
+};
+
 const addComentario = async (request, response) => {
     const usuarioId = request.params.usuarioId;
     const eventoId = request.params.eventoId;
@@ -109,5 +126,6 @@ module.exports = {
     addAdmin,
     addEvento,
     getAll,
+    getByOrganizadorNome,
     addComentario
 }

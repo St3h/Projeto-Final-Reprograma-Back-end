@@ -8,6 +8,7 @@ router.post('/organizador', controller.addOrganizador);
 router.post('/admin', controller.addAdmin);
 router.post('/:organizadorId/evento', controller.addEvento);
 router.get('', controller.getAll);
+router.get('/:organizadorNome', controller.getByOrganizadorNome);
 router.patch('/:usuarioId/comentario/:eventoId', controller.addComentario);
 
 
