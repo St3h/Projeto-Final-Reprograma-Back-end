@@ -26,7 +26,6 @@ const addOrganizador = (request, response) => {
     })
 };
 
-
 const addAdmin = (request, response) => {
     request.body.grupo = 'admin';
     const novoUsuario = new usuarioModel(request.body);
@@ -45,9 +44,11 @@ const addEvento =  async (request, response) => {
     const evento = request.body;
     const options = { new: true };
 
-    const novoEvento = new oportunidadeModel(evento);
     const organizador = await usuarioModel.findById(organizadorId);
+    request.body.organizador = organizador.nome
 
+    const novoEvento = new oportunidadeModel(evento);
+    
     organizador.oportunidades.push(novoEvento);
 
     novoEvento.save((error) =>{
@@ -72,10 +73,6 @@ const getAll = (request, response) => {
             return response.status(200).send(eventos)
     });
 };
-
-
-
-
 
 const addComentario = async (request, response) => {
     const usuarioId = request.params.usuarioId;
