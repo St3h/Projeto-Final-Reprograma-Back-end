@@ -6,7 +6,7 @@ const controller = require ('../controllers/oportunidadesController');
 router.post('', controller.addUsuario);
 router.post('/organizador', controller.addOrganizador);
 router.post('/admin', controller.addAdmin);
-// router.patch('/:id', controller.upDate);
+router.patch('/:id', controller.update);
 router.post('/:organizadorId/evento', controller.addEvento);
 router.get('', controller.getAll);
 router.get('/organizador/:organizadorNome', controller.getByOrganizadorNome);

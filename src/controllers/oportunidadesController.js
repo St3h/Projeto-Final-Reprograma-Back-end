@@ -50,23 +50,28 @@ const addAdmin = (request, response) => {
 
 };
 
-// const upDate = (request, response) => {
-//     const id = request.params.id;
-//     const options = { new: true};
+const update = (request, response) => {
+    const id = request.params.id;
+    const options = { new: true};
 
-//     usuarioModel.findOneAndUpdate(
-//         id,
-//         {
-//             $set: {
-//                 'usuario.$.foto': request.body.senha,
-//                 'usuario.'
-//             }
-//         }
-
-//     )
-
-
-// }
+    usuarioModel.findOneAndUpdate(
+        id,
+        {
+            $set: {
+                'usuario.$.nome': request.body.nome,
+                'usuario.$.foto': request.body.foto,
+                'usuario.$.senha': request.body.senha
+            }
+        },
+        options,
+        (error, usuario) => {
+            if(error){
+                return response.status(500).send(error)
+            }
+                return response.status(201).send(usuario)
+        }
+    )
+};
 
 const addEvento =  async (request, response) => {
     const organizadorId = request.params.organizadorId;
@@ -196,6 +201,7 @@ module.exports = {
     addUsuario,
     addOrganizador,
     addAdmin,
+    update,
     addEvento,
     getAll,
     getByOrganizadorNome,
