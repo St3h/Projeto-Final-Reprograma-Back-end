@@ -46,32 +46,37 @@ const addAdmin = (request, response) => {
             return response.status(500).send(error)
         }
             return response.status(201).send(novoUsuario)
-    })
-
+    });
 };
 
-const update = (request, response) => {
-    const id = request.params.id;
-    const options = { new: true};
-
-    usuarioModel.findOneAndUpdate(
-        id,
-        {
-            $set: {
-                'usuario.$.nome': request.body.nome,
-                'usuario.$.foto': request.body.foto,
-                'usuario.$.senha': request.body.senha
-            }
-        },
-        options,
-        (error, usuario) => {
-            if(error){
-                return response.status(500).send(error)
-            }
-                return response.status(201).send(usuario)
+const getAll = (request, response) => {
+    usuarios = usuarioModel.find((error, eventos) => {
+        if(error){
+            return response.status(500).send(error)
         }
-    )
+            return response.status(200).send(eventos)
+    });
 };
+
+// const update = (request, response) => {
+//     const id = request.params.id;
+//     const options = { new: true};
+
+//     usuarioModel.findOneAndUpdate(
+//         {_id: id},
+//         {
+//              $set: { request.body
+//             }
+//         },
+//         options,
+//         (error, usuario) => {
+//             if(error){
+//                 return response.status(500).send(error)
+//             }
+//                 return response.status(201).send(usuario)
+//         }
+//     )
+// };
 
 const addEvento =  async (request, response) => {
     const organizadorId = request.params.organizadorId;
@@ -99,7 +104,7 @@ const addEvento =  async (request, response) => {
     });
 };
 
-const getAll = (request, response) => {
+const getAllEventos = (request, response) => {
     eventos = oportunidadeModel.find((error, eventos) =>{
         if(error){
             return response.status(500).send(error)
@@ -197,15 +202,33 @@ const addComentario = async (request, response) => {
 //     );
 // };
 
+
+const remove = (request, response) => {
+    const id = request.params.id
+
+    usuarioModel.findByIdAndDelete(id, (error, usuario) => {
+        if(error){
+            return response.status(500).send(error)
+        }
+        if(usuario){
+            return response.status(200).send('Usuário removido')
+        }
+            return response.status(404).send('Usuário não encontrado')       
+    })
+};
+
+
 module.exports = {
     addUsuario,
     addOrganizador,
     addAdmin,
-    update,
-    addEvento,
     getAll,
+    // update,
+    addEvento,
+    getAllEventos,
     getByOrganizadorNome,
     getByEventoNome,
     addComentario,
-    // upDateEvento
+    // upDateEvento,
+    remove
 }
