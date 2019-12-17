@@ -58,25 +58,25 @@ const getAll = (request, response) => {
     });
 };
 
-// const update = (request, response) => {
-//     const id = request.params.id;
-//     const options = { new: true};
+const update = (request, response) => {
+    const id = request.params.id;
+    const options = { new: true};
 
-//     usuarioModel.findOneAndUpdate(
-//         {_id: id},
-//         {
-//              $set: { request.body
-//             }
-//         },
-//         options,
-//         (error, usuario) => {
-//             if(error){
-//                 return response.status(500).send(error)
-//             }
-//                 return response.status(201).send(usuario)
-//         }
-//     )
-// };
+    usuarioModel.findOneAndUpdate(
+        {_id: id},
+        {
+             $set: { ...request.body
+            }
+        },
+        options,
+        (error, usuario) => {
+            if(error){
+                return response.status(500).send(error)
+            }
+                return response.status(201).send(usuario)
+        }
+    )
+};
 
 const addEvento =  async (request, response) => {
     const organizadorId = request.params.organizadorId;
@@ -176,6 +176,29 @@ const addComentario = async (request, response) => {
     });
 };
 
+// const updateEvento = (request, response) => {
+//     const organizadorId = request.params.organizadorId;
+//     const eventoId = request.params.eventoId;
+//     const options = { new: true};
+
+//     usuarioModel.findOneAndUpdate(
+//         {_id: organizadorId, "oportunidades._id": eventoId},
+//         {
+//             $set: { 'oportunidades.$': request.body}
+//         },
+//         options,
+//         (error, organizador) => {
+//             if(error){
+//                 return response.status(500).send(error)
+//             }
+//             if(organizador){
+//                 return response.status(201).send(organizador)
+//             }
+//                 return response.status(404).send('Organizador ou evento não encontrado')
+//         }
+//     );
+// };
+
 // const upDateEvento = async (request, response) => {
 //     const organizadorId = request.params.organizadorId;
 //     const eventoId = request.params.eventoId;
@@ -217,18 +240,37 @@ const remove = (request, response) => {
     })
 };
 
+const removeEvento =  async (request, response) => {
+    const organizadorId = request.params.organizadorId
+    const eventoId = request.params.eventoId
+
+    const organizador = await usuarioModel.update(
+        {_id: organizadorId},
+        { $pull: { oportunidades: { _id: eventoId}}},
+        (error, organizador) => {
+            if(error){
+                return response.status(500).send(error)
+            }
+            if(organizador){
+                return response.status(200).send('Evento removido')
+            }   
+                return response.status(404).send('Organizador ou evento não encontrado')         
+    })
+};
+
 
 module.exports = {
     addUsuario,
     addOrganizador,
     addAdmin,
     getAll,
-    // update,
+    update,
     addEvento,
     getAllEventos,
     getByOrganizadorNome,
     getByEventoNome,
     addComentario,
-    // upDateEvento,
-    remove
+    // updateEvento,
+    remove,
+    removeEvento
 }
