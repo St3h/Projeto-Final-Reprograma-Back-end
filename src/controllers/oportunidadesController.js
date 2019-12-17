@@ -2,6 +2,17 @@ const { usuarioModel } = require('../models/usuarioSchema');
 const { oportunidadeModel } = require('../models/oportunidadeSchema');
 const { comentarioModel }= require('../models/comentarioSchema');
 
+// const eventoBody = async (evento, eventoId, organizadorId) => {
+//     const organizador =  await usuarioModel.findById(organizadorId)
+//     const eventoSalvo = organizador.oportunidades.find((oportunidade) => {
+//      oportunidade._id == eventoId
+//     })
+//     evento.nome = evento.nome || eventoSalvo.nome
+//     evento.foto = evento.foto || eventoSalvo.foto
+
+//     return evento
+// }
+
 const addUsuario = (request, response) => {
     request.body.grupo = 'comum';
     const novoUsuario = new usuarioModel(request.body);
@@ -38,6 +49,24 @@ const addAdmin = (request, response) => {
     })
 
 };
+
+// const upDate = (request, response) => {
+//     const id = request.params.id;
+//     const options = { new: true};
+
+//     usuarioModel.findOneAndUpdate(
+//         id,
+//         {
+//             $set: {
+//                 'usuario.$.foto': request.body.senha,
+//                 'usuario.'
+//             }
+//         }
+
+//     )
+
+
+// }
 
 const addEvento =  async (request, response) => {
     const organizadorId = request.params.organizadorId;
@@ -137,6 +166,32 @@ const addComentario = async (request, response) => {
     });
 };
 
+// const upDateEvento = async (request, response) => {
+//     const organizadorId = request.params.organizadorId;
+//     const eventoId = request.params.eventoId;
+//     const eventoNovo = request.body;
+//     const options = { new: true };
+
+//     const eventoUpdate = eventoBody(eventoNovo, eventoId, organizadorId)
+
+//     usuarioModel.findOneAndUpdate(
+//         { _id: organizadorId, 'oportunidades._id': eventoId },
+//         {
+//             $set: {'oportunidades.$': eventoUpdate}
+//         },
+//         options,
+//         (error, organizador) => {
+//             if(error){
+//                 return response.status(500).send(error)
+//             }
+//             if (organizador){
+//                 return response.status(200).send(organizador)
+//             }
+//                 return response.status(404).send('Organizador não encontrado')
+//         }        
+//     );
+// };
+
 module.exports = {
     addUsuario,
     addOrganizador,
@@ -145,5 +200,6 @@ module.exports = {
     getAll,
     getByOrganizadorNome,
     getByEventoNome,
-    addComentario
+    addComentario,
+    // upDateEvento
 }

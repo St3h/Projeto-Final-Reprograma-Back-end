@@ -4,6 +4,7 @@ const MONGO_URL = 'mongodb://localhost:27017/OportunidadesApi';
 const connect = () => {
   mongoose.connect(MONGO_URL, { 
     useUnifiedTopology: true,
+    useFindAndModify: true,
     useCreateIndex: true,
     useNewUrlParser: true })
   const connection = mongoose.connection
